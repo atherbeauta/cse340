@@ -1,31 +1,35 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
-
 const app = express();
+
+// Recreate __dirname for ES Modules compatibility on Linux/Render
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Utilisez STRICTEMENT cette syntaxe avec path.join pour Linux
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Set up view engine and absolute views directory path
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Vos routes...
+// Serve static assets (CSS, images, client-side JS) from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// --- ROUTES ---
+
+// Home route
 app.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
+// Categories route (dynamically passing an array to the view)
 app.get('/categories', (req, res) => {
-    const categories = ['Environnement', 'Pédagogique', 'Service communautaire', 'Santé et bien-être'];
-    res.render('categories', { title: 'Categories', categories });
+    const categoriesArray = ['Environment', 'Educational', 'Community Service', 'Health & Wellness'];
+    res.render('categories', { title: 'Categories', categories: categoriesArray });
 });
 
-const PORT = process.env.PORT || 3000;
+// Server activation
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running and listening on port ${PORT}`);
 });
