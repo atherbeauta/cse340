@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+
+<main>
+    <h2>Project Categories</h2>
+    <ul>
+        <!-- Dynamically loop through the categories array passed from server.js -->
+        <% categories.forEach(function(category) { %>
+            <li><%= category %></li>
+        <% }); %>
+    </ul>
+</main>
+
+<%- include('partials/footer') %>
