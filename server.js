@@ -12,7 +12,8 @@ const __dirname = path.dirname(__filename);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static assets (CSS, images) from the public directory
+// Serve CSS from the project css folder and other static assets from public
+app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- ROUTES ---

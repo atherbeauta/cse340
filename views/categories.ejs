@@ -1,11 +1,15 @@
 <%- include('partials/header') %>
 
-<main>
-    <h2>Project Categories</h2>
-    <ul>
-        <!-- Dynamically loop through the categories array passed from server.js -->
+<main class="page-content categories-page">
+    <section class="section-header">
+        <h2>Project Categories</h2>
+        <p>Explorez les domaines d’action et inspirez-vous pour votre prochain projet.</p>
+    </section>
+    <ul class="category-grid">
         <% categories.forEach(function(category) { %>
-            <li><%= category %></li>
+            <li class="category-card">
+                <span><%= category %></span>
+            </li>
         <% }); %>
     </ul>
 </main>
