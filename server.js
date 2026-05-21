@@ -18,6 +18,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- ROUTES ---
 
+// Provide the current year to all templates dynamically
+app.use((req, res, next) => {
+    res.locals.year = new Date().getFullYear();
+    next();
+});
+
 // Home route
 app.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
@@ -25,9 +31,32 @@ app.get('/', (req, res) => {
 
 // Categories route
 app.get('/categories', (req, res) => {
-    const categoriesArray = ['Environment', 'Educational', 'Community Service', 'Health & Wellness'];
-    res.render('categories', { title: 'Categories', categories: categoriesArray });
+    const categories = ['Environment', 'Educational', 'Community Service', 'Health & Wellness'];
+    res.render('categories', { title: 'Categories', categories });
 });
+
+// Organizations route
+app.get('/organizations', (req, res) => {
+    const organizations = [
+        {
+            name: 'Pathway Promise',
+            image: '/images/org-1.svg',
+            description: 'Supporting students with mentorship, scholarships, and community outreach.'
+        },
+        {
+            name: 'Campus Care Collective',
+            image: '/images/org-2.svg',
+            description: 'Delivering wellness programs, volunteer events, and neighborhood improvements.'
+        },
+        {
+            name: 'Innovation Impact',
+            image: '/images/org-3.svg',
+            description: 'Connecting learners with service, sustainability, and technology projects.'
+        }
+    ];
+    res.render('organizations', { title: 'Organizations', organizations });
+});
+
 
 // Server activation
 const PORT = process.env.PORT || 10000;

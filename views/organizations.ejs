@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<main class="page-content organizations-page">
+    <section class="section-header">
+        <h2>Community Organizations</h2>
+        <p>Meet three organizations that bring students, service, and creativity together.</p>
+    </section>
+
+    <ul class="organization-grid">
+        <% organizations.forEach(function(org) { %>
+            <li class="organization-card">
+                <img src="<%= org.image %>" alt="Logo for <%= org.name %>">
+                <h3><%= org.name %></h3>
+                <p><%= org.description %></p>
+            </li>
+        <% }); %>
+    </ul>
+</main>
+
+<%- include('partials/footer') %>
