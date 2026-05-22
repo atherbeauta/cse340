@@ -1,6 +1,9 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sqlite3 from 'sqlite3';
+import fs from 'fs';
+import { getAllCategories } from './src/models/categories.js';
 
 const app = express();
 
@@ -16,6 +19,25 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Initialize database
+const initializeDatabase = () => {
+    const db = new sqlite3.Database(path.join(__dirname, 'src/database.db'));
+    const sql = fs.readFileSync(path.join(__dirname, 'src/setup.sql'), 'utf8');
+    
+    db.exec(sql, (err) => {
+        if (err) {
+            console.error('Error initializing database:', err);
+        } else {
+            console.log('Database initialized successfully');
+        }
+    });
+    
+    db.close();
+};
+
+// Initialize database on startup
+initializeDatabase();
+
 // --- ROUTES ---
 
 // Provide the current year to all templates dynamically
@@ -30,9 +52,14 @@ app.get('/', (req, res) => {
 });
 
 // Categories route
-app.get('/categories', (req, res) => {
-    const categories = ['Environment', 'Educational', 'Community Service', 'Health & Wellness'];
-    res.render('categories', { title: 'Categories', categories });
+app.get('/categories', async (req, res) => {
+    try {
+        const categories = await getAllCategories();
+        res.render('categories', { title: 'Categories', categories });
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.render('categories', { title: 'Categories', categories: [] });
+    }
 });
 
 // Organizations route
