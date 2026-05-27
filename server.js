@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import { getAllCategories } from './src/models/categories.js';
+import router from './src/routes.js';
 
 const app = express();
 
@@ -46,42 +47,18 @@ app.use((req, res, next) => {
     next();
 });
 
-// Home route
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Home' });
+// Register application routes from src/routes.js
+app.use('/', router);
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).render('404');
 });
 
-// Categories route
-app.get('/categories', async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-        res.render('categories', { title: 'Categories', categories });
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        res.render('categories', { title: 'Categories', categories: [] });
-    }
-});
-
-// Organizations route
-app.get('/organizations', (req, res) => {
-    const organizations = [
-        {
-            name: 'Pathway Promise',
-            image: '/images/org-1.svg',
-            description: 'Supporting students with mentorship, scholarships, and community outreach.'
-        },
-        {
-            name: 'Campus Care Collective',
-            image: '/images/org-2.svg',
-            description: 'Delivering wellness programs, volunteer events, and neighborhood improvements.'
-        },
-        {
-            name: 'Innovation Impact',
-            image: '/images/org-3.svg',
-            description: 'Connecting learners with service, sustainability, and technology projects.'
-        }
-    ];
-    res.render('organizations', { title: 'Organizations', organizations });
+// Error handler
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).render('500');
 });
 
 

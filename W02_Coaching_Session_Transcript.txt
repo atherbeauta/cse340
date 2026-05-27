@@ -1,0 +1,85 @@
+AI: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+User: My name is Kazadi Athanase Muamba.
+
+AI: Thank you, Kazadi. This is a safe learning space. For our first topic, can you explain the purpose of your database tables and their relationships, especially how the categories and projects are connected? Please include one relevant SQL snippet.
+
+User: In my application, I use four tables in `src/setup.sql`.
+- `organizations` stores each organization with `id`, `name`, `description`, and `image`.
+- `projects` stores service projects and links to `organizations` with `organization_id`.
+- `categories` stores service project categories with `id` and `name`.
+- `project_categories` is a junction table that links `projects` and `categories` in a many-to-many relationship.
+
+One relevant SQL snippet is:
+```
+CREATE TABLE IF NOT EXISTS project_categories (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+```
+This ensures a project can have many categories and a category can belong to many projects.
+
+AI: Great, that explains the relational design clearly. For the second topic, tell me about the Node.js function that retrieves categories from the database and how the data flows in that function. Please quote a snippet from `src/models/categories.js`.
+
+User: The Node.js data access logic is in `src/models/categories.js` and uses SQLite.
+The function is called `getAllCategories()` and returns a promise. It runs a SQL query to select `id` and `name` from `categories`.
+The flow is: open the database, execute the query, handle the callback, and resolve the rows as an array.
+
+Relevant code snippet:
+```
+export const getAllCategories = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT id, name FROM categories ORDER BY name', (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows || []);
+            }
+        });
+    });
+};
+```
+This loads the categories from the database and returns them to the caller.
+
+AI: Excellent. Now for the third topic, describe the Express route that serves the categories page and how the route handler maps the path to the view. Include a snippet from `server.js`.
+
+User: The Express route is defined in `server.js` as `/categories`.
+The handler is asynchronous and calls `getAllCategories()`. It then renders the `categories` EJS view with the categories array.
+
+Snippet:
+```
+app.get('/categories', async (req, res) => {
+    try {
+        const categories = await getAllCategories();
+        res.render('categories', { title: 'Categories', categories });
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.render('categories', { title: 'Categories', categories: [] });
+    }
+});
+```
+This route maps the URL `/categories` to the EJS template and passes the dynamic data.
+
+AI: Good, that covers the routing logic well. Finally, for the fourth topic, explain how the EJS template receives the category data and displays it. Quote the relevant EJS syntax from `views/categories.ejs`.
+
+User: In `views/categories.ejs`, the data passed from the route is available as `categories`.
+The template loops through each category object and displays `category.name` inside a list item.
+
+Snippet:
+```
+<% categories.forEach(function(category) { %>
+    <li class="category-card">
+        <span><%= category.name %></span>
+    </li>
+<% }); %>
+```
+This is how the template engine renders each category name on the page.
+
+AI: Thank you, Kazadi. We have now covered all required topics: database design, Node.js data access, Express routing, and EJS rendering. Your session is complete.
+
+User: Thank you.
+
+AI: You’re welcome! I recommend saving this transcript as `W02_Coaching_Session_Transcript.txt` and uploading it to Canvas for the coaching session submission.

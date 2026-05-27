@@ -22,3 +22,44 @@ export const getAllCategories = () => {
         });
     });
 };
+
+export const getCategoryById = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT id, name FROM categories WHERE id = ?', [id], (err, row) => {
+            if (err) reject(err);
+            else resolve(row || null);
+        });
+    });
+};
+
+export const getCategoriesByProjectId = (projectId) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT c.id, c.name
+            FROM categories c
+            JOIN project_categories pc ON c.id = pc.category_id
+            WHERE pc.project_id = ?
+            ORDER BY c.name
+        `;
+        db.all(query, [projectId], (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows || []);
+        });
+    });
+};
+
+export const getProjectsByCategoryId = (categoryId) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT p.id, p.name, p.description, p.organization_id
+            FROM projects p
+            JOIN project_categories pc ON p.id = pc.project_id
+            WHERE pc.category_id = ?
+            ORDER BY p.name
+        `;
+        db.all(query, [categoryId], (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows || []);
+        });
+    });
+};

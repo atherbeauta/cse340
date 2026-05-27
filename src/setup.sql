@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS projects (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     organization_id INTEGER NOT NULL,
+    date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (organization_id) REFERENCES organizations(id)
 );
@@ -47,13 +48,13 @@ INSERT OR IGNORE INTO categories (id, name) VALUES
 (4, 'Health & Wellness');
 
 -- Insert Projects
-INSERT OR IGNORE INTO projects (id, name, description, organization_id) VALUES
-(1, 'Tree Planting Initiative', 'Plant trees and restore green spaces in urban areas.', 1),
-(2, 'Scholarship Fund Drive', 'Raise funds to support student scholarships.', 1),
-(3, 'Community Garden', 'Build and maintain community gardens for local residents.', 2),
-(4, 'Wellness Fair', 'Host annual health and wellness fair for the campus.', 2),
-(5, 'Tech for Good', 'Provide technology training to underserved communities.', 3),
-(6, 'Disaster Relief', 'Coordinate disaster relief efforts and recovery support.', 3);
+INSERT OR IGNORE INTO projects (id, name, description, organization_id, date) VALUES
+(1, 'Tree Planting Initiative', 'Plant trees and restore green spaces in urban areas.', 1, '2026-06-05'),
+(2, 'Scholarship Fund Drive', 'Raise funds to support student scholarships.', 1, '2026-06-20'),
+(3, 'Community Garden', 'Build and maintain community gardens for local residents.', 2, '2026-07-01'),
+(4, 'Wellness Fair', 'Host annual health and wellness fair for the campus.', 2, '2026-05-20'),
+(5, 'Tech for Good', 'Provide technology training to underserved communities.', 3, '2026-06-15'),
+(6, 'Disaster Relief', 'Coordinate disaster relief efforts and recovery support.', 3, '2026-08-10');
 
 -- Insert Project-Category associations
 INSERT OR IGNORE INTO project_categories (project_id, category_id) VALUES

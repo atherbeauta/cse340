@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+
+<main class="page-content organization-page">
+    <section class="section-header">
+        <h2><%= organization.name %></h2>
+        <p><%= organization.description %></p>
+    </section>
+
+    <section class="organization-projects">
+        <h3>Projects</h3>
+        <ul>
+            <% projects.forEach(function(project) { %>
+                <li><a href="/project/<%= project.id %>"><%= project.name %></a></li>
+            <% }); %>
+        </ul>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

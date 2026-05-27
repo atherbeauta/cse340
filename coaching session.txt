@@ -1,0 +1,16 @@
+# CSE 340 - W01 Coaching Session Report
+**Student Name:** Kazadi Athanase Muamba  
+**Course:** CSE 340 - Web Development I  
+
+---
+
+## 1. Express Routing
+Express routing defines how an application responds to client requests at specific endpoints (URIs). In our `server.js` file, Express listens for HTTP GET requests from the browser and directs them to the correct handler. The server uses specific path variables to render dynamic templates instead of serving raw files, bridging user navigation to backend logic seamlessly on both local Windows and production environments.
+
+### Code Snippet:
+```javascript
+// Express routing example from server.js
+app.get('/categories', (req, res) => {
+    const categoriesArray = ['Environment', 'Educational', 'Community Service', 'Health & Wellness'];
+    res.render('categories', { title: 'Categories', categories: categoriesArray });
+});
