@@ -9,8 +9,10 @@
     <ul class="organization-grid">
         <% organizations.forEach(function(org) { %>
             <li class="organization-card">
-                <img src="<%= org.image %>" alt="Logo for <%= org.name %>">
-                <h3><%= org.name %></h3>
+                <a class="organization-link" href="/organization/<%= org.id %>">
+                    <img src="<%= org.image %>" alt="Logo for <%= org.name %>">
+                    <h3><%= org.name %></h3>
+                </a>
                 <p><%= org.description %></p>
             </li>
         <% }); %>
