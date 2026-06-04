@@ -1,0 +1,19 @@
+<%- include('../partials/header', { title: 'Projects' }) %>
+<section>
+  <div class="section-header">
+    <h2>Projects</h2>
+  </div>
+  <ul>
+    <% projects.forEach(function(project){ %>
+      <li>
+        <strong><a href="/projects/<%= project.id %>"><%= project.name %></a></strong>
+        <% if (project.organizationName) { %>
+          <span> — <%= project.organizationName %></span>
+        <% } %>
+        <a href="/edit-project/<%= project.id %>">Edit</a>
+      </li>
+    <% }) %>
+  </ul>
+  <a class="button" href="/new-project">Create new project</a>
+</section>
+<%- include('../partials/footer') %>

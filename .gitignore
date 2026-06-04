@@ -1,3 +1,8 @@
-node_modules/
-src/database.db
-.DS_Store
+node_modules/ 
+data/ 
+*.sqlite 
+*.log 
+*.xlsx 
+~\$* 
+.DS_Store 
+*.tmp

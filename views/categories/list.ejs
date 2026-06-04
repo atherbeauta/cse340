@@ -1,0 +1,13 @@
+<%- include('../partials/header', { title: 'Categories' }) %>
+<section>
+  <div class="section-header">
+    <h2>Categories</h2>
+  </div>
+  <ul>
+    <% categories.forEach(function(cat){ %>
+      <li><%= cat.name %> - <a href="/edit-category/<%= cat.id %>">Edit</a></li>
+    <% }) %>
+  </ul>
+  <a class="button" href="/new-category">Create new category</a>
+</section>
+<%- include('../partials/footer') %>

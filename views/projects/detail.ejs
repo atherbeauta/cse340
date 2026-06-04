@@ -1,0 +1,24 @@
+<%- include('../partials/header', { title: project.name }) %>
+<section>
+  <div class="section-header">
+    <h2><%= project.name %></h2>
+  </div>
+  <% if (project.organizationName) { %>
+    <p><strong>Organization:</strong> <%= project.organizationName %></p>
+  <% } %>
+  <% if (project.description) { %>
+    <p><strong>Description:</strong> <%= project.description %></p>
+  <% } %>
+  <p><strong>Assigned Categories:</strong></p>
+  <ul>
+    <% if (assignedCategories.length) { %>
+      <% assignedCategories.forEach(function(category){ %>
+        <li><%= category.name %></li>
+      <% }) %>
+    <% } else { %>
+      <li>No categories assigned.</li>
+    <% } %>
+  </ul>
+  <a class="button" href="/projects/<%= project.id %>/categories">Update categories</a>
+</section>
+<%- include('../partials/footer') %>

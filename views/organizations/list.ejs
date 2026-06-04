@@ -1,0 +1,16 @@
+<%- include('../partials/header', { title: 'Organizations' }) %>
+<section>
+  <div class="section-header">
+    <h2>Organizations</h2>
+  </div>
+  <ul>
+    <% organizations.forEach(function(org){ %>
+      <li>
+        <strong><%= org.name %></strong>
+        <a href="/edit-organization/<%= org.id %>">Edit</a>
+      </li>
+    <% }) %>
+  </ul>
+  <a class="button" href="/new-organization">Create new organization</a>
+</section>
+<%- include('../partials/footer') %>

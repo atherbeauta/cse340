@@ -1,21 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %> | CSE 340 App</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
     <header class="site-header">
-        <div class="brand">
-            <h1>CSE 340 Web Application</h1>
-            <p class="tagline">Learn, build, and share with style.</p>
-        </div>
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/categories">Categories</a>
-            <a href="/organizations">Organizations</a>
-            <a href="/projects">Projects</a>
-        </nav>
+      <div class="brand">
+        <h1>CSE340 App</h1>
+        <p class="tagline">Category management for W04</p>
+      </div>
+      <nav class="site-nav">
+        <a href="/projects">Projects</a>
+        <a href="/new-project">New Project</a>
+        <a href="/organizations">Organizations</a>
+        <a href="/new-organization">New Organization</a>
+        <a href="/categories">Categories</a>
+        <a href="/new-category">New Category</a>
+      </nav>
     </header>
+    <main class="page-content">
+      <% if (success && success.length) { %>
+        <div class="flash flash-success"><%= success[0] %></div>
+      <% } %>
+      <% if (error && error.length) { %>
+        <div class="flash flash-error"><%= error[0] %></div>
+      <% } %>

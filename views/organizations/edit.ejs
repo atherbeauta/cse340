@@ -1,0 +1,20 @@
+<%- include('../partials/header', { title: 'Edit Organization' }) %>
+<section>
+  <h2>Edit Organization</h2>
+  <form id="editOrganizationForm" action="/edit-organization/<%= old.id %>" method="post">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" maxlength="100" value="<%= old.name || '' %>" required>
+    </div>
+    <% if (errors && errors.length) { %>
+      <ul>
+        <% errors.forEach(function(e){ %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <button type="submit">Save</button>
+  </form>
+</section>
+<script src="/js/validation.js"></script>
+<%- include('../partials/footer') %>

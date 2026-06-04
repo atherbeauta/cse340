@@ -1,0 +1,16 @@
+<%- include('../partials/header', { title: 'Assign Categories' }) %>
+<section>
+  <h2>Assign Categories for <%= project.name %></h2>
+  <form action="/projects/<%= project.id %>/categories" method="post">
+    <div>
+      <% categories.forEach(function(category){ %>
+        <label>
+          <input type="checkbox" name="category_ids" value="<%= category.id %>" <%= selectedIds.includes(category.id) ? 'checked' : '' %>>
+          <%= category.name %>
+        </label>
+      <% }) %>
+    </div>
+    <button type="submit">Save categories</button>
+  </form>
+</section>
+<%- include('../partials/footer') %>

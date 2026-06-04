@@ -1,0 +1,33 @@
+<%- include('../partials/header', { title: 'New Project' }) %>
+<section>
+  <h2>Create Project</h2>
+  <form id="newProjectForm" action="/new-project" method="post">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" maxlength="100" value="<%= old.name || '' %>" required>
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <input id="description" name="description" type="text" maxlength="500" value="<%= old.description || '' %>">
+    </div>
+    <div>
+      <label for="organization_id">Organization</label>
+      <select id="organization_id" name="organization_id">
+        <option value="">None</option>
+        <% organizations.forEach(function(org){ %>
+          <option value="<%= org.id %>" <%= old.organization_id == org.id ? 'selected' : '' %>><%= org.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <% if (errors && errors.length) { %>
+      <ul>
+        <% errors.forEach(function(e){ %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <button type="submit">Create</button>
+  </form>
+</section>
+<script src="/js/validation.js"></script>
+<%- include('../partials/footer') %>

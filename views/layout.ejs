@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= title || 'CSE340 App' %></title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header>
+      <h1>CSE340 App</h1>
+      <nav>
+        <a href="/categories">Categories</a> |
+        <a href="/new-category">New Category</a>
+      </nav>
+    </header>
+    <main>
+      <% if (success && success.length) { %>
+        <div class="flash flash-success"><%= success[0] %></div>
+      <% } %>
+      <% if (error && error.length) { %>
+        <div class="flash flash-error"><%= error[0] %></div>
+      <% } %>
+      <%- body %>
+    </main>
+  </body>
+</html>
