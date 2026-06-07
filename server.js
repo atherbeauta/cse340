@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
 const flash = require('connect-flash');
 
 const categoryRoutes = require('./routes/categoryRoutes');
@@ -17,11 +19,24 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
 app.use(
   session({
+    store: new SQLiteStore({
+      db: 'sessions.sqlite',
+      dir: dataDir,
+      concurrentDB: true
+    }),
     secret: 'cse340-secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000
+    }
   })
 );
 app.use(flash());
