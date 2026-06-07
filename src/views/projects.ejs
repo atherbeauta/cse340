@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>W02 Database Retrieval</h1>
+      <nav class="site-nav">
+        <a href="/organizations">Organizations</a>
+        <a href="/projects">Projects</a>
+        <a href="/categories">Categories</a>
+      </nav>
+    </header>
+    <main class="page-content">
+      <section>
+        <h2>Projects</h2>
+        <p>This page retrieves project data from the database and shows the date and organization.</p>
+        <ul class="item-list">
+          <% projects.forEach(function(project) { %>
+            <li>
+              <strong><%= project.name %></strong>
+              <p><%= project.description %></p>
+              <p>Date: <%= project.date %></p>
+              <p>Organization: <%= project.organization_name %></p>
+            </li>
+          <% }) %>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
