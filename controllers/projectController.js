@@ -24,15 +24,16 @@ exports.showNewProjectForm = async (req, res) => {
 exports.createProject = [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be at most 100 characters').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
   body('description').trim().isLength({ max: 500 }).withMessage('Description must be at most 500 characters'),
+  body('date').notEmpty().withMessage('Service date is required'),
   async (req, res) => {
     const errors = validationResult(req);
-    const { name, description, organization_id } = req.body;
+    const { name, description, date, organization_id } = req.body;
     const organizations = await organizationModel.getAllOrganizations();
     if (!errors.isEmpty()) {
-      return res.status(422).render('projects/new', { errors: errors.array(), old: { name, description, organization_id }, organizations });
+      return res.status(422).render('projects/new', { errors: errors.array(), old: { name, description, date, organization_id }, organizations });
     }
     try {
-      await projectModel.createProject(name, description, organization_id);
+      await projectModel.createProject(name, description, date, organization_id);
       req.flash('success', 'Project created');
       res.redirect('/projects');
     } catch (err) {
@@ -55,16 +56,17 @@ exports.showEditProjectForm = async (req, res) => {
 exports.updateProject = [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be at most 100 characters').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
   body('description').trim().isLength({ max: 500 }).withMessage('Description must be at most 500 characters'),
+  body('date').notEmpty().withMessage('Service date is required'),
   async (req, res) => {
     const errors = validationResult(req);
-    const { name, description, organization_id } = req.body;
+    const { name, description, date, organization_id } = req.body;
     const id = req.params.id;
     const organizations = await organizationModel.getAllOrganizations();
     if (!errors.isEmpty()) {
-      return res.status(422).render('projects/edit', { errors: errors.array(), old: { id, name, description, organization_id }, organizations });
+      return res.status(422).render('projects/edit', { errors: errors.array(), old: { id, name, description, date, organization_id }, organizations });
     }
     try {
-      await projectModel.updateProject(id, name, description, organization_id);
+      await projectModel.updateProject(id, name, description, date, organization_id);
       req.flash('success', 'Project updated');
       res.redirect('/projects');
     } catch (err) {

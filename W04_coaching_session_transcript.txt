@@ -1,0 +1,131 @@
+AI Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+Student: Hi. I want to discuss my W04 project and make sure the coaching session covers the required topics.
+
+AI Coach: Great, let's begin with handling form submissions. Can you explain how you move data from a submitted form into your controller and model? Here is a code snippet from your `controllers/projectController.js`:
+
+```js
+exports.createProject = [
+  body('name').trim().notEmpty().withMessage('Name is required')
+    .isLength({ max: 100 }).withMessage('Name must be at most 100 characters')
+    .isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
+  body('description').trim().isLength({ max: 500 }).withMessage('Description must be at most 500 characters'),
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { name, description, organization_id } = req.body;
+    const organizations = await organizationModel.getAllOrganizations();
+    if (!errors.isEmpty()) {
+      return res.status(422).render('projects/new', { errors: errors.array(), old: { name, description, organization_id }, organizations });
+    }
+    try {
+      await projectModel.createProject(name, description, organization_id);
+      req.flash('success', 'Project created');
+      res.redirect('/projects');
+    } catch (err) {
+      res.status(500).send('Database error');
+    }
+  }
+];
+```
+
+Student: I gather `req.body` from the submitted form and then I call `projectModel.createProject(...)`. I also check validation errors before saving, and if there are problems I re-render the form with the old values and error messages.
+
+AI Coach: That’s a good summary. What decisions led you to put the form handling logic in a controller and keep the database logic in the model? 
+
+Student: I wanted to follow MVC. The controller handles the request, validation, and response flow, while the model only does database operations. It keeps the app organized.
+
+AI Coach: Excellent. Now let's discuss forms used for updates. Please show me an EJS snippet where the form is pre-populated with existing data.
+
+Student: I have an edit form for categories in `views/categories/edit.ejs`:
+
+```ejs
+<%- include('../partials/header', { title: 'Edit Category' }) %>
+<section>
+  <h2>Edit Category</h2>
+  <form id="editCategoryForm" action="/edit-category/<%= old.id %>" method="post">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" maxlength="100" value="<%= old.name || '' %>" required>
+    </div>
+    <% if (errors && errors.length) { %>
+      <ul>
+        <% errors.forEach(function(e){ %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <button type="submit">Save</button>
+  </form>
+</section>
+<script src="/js/validation.js"></script>
+<%- include('../partials/footer') %>
+```
+
+AI Coach: Nice. How does this update form ensure the existing category data is preserved when the user opens the edit page? 
+
+Student: It uses `old.name` and `old.id` from the controller. The controller fetches the category by ID from the model, then passes that data into the EJS template so the inputs are pre-filled.
+
+AI Coach: Great. That pattern is exactly what update forms need. 
+
+AI Coach: Next, sessions and flash messages. Tell me how you configured sessions and what purpose flash messages serve in your app. Here’s the relevant snippet from `server.js`:
+
+```js
+const session = require('express-session');
+const flash = require('connect-flash');
+
+app.use(
+  session({
+    secret: 'cse340-secret',
+    resave: false,
+    saveUninitialized: false
+  })
+);
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
+```
+
+Student: I use `express-session` to store session state on the server and `connect-flash` to store temporary messages between requests. When a user submits a form and it succeeds, I set `req.flash('success', '...')`, and the view renders that message on the next page load.
+
+AI Coach: Good. Why are flash messages better than rendering success text directly in the redirect case? 
+
+Student: Because after a redirect, the original request is gone. Flash messages survive one redirect and let me show feedback on the next page without keeping the original request data.
+
+AI Coach: Correct. Finally, let’s discuss server-side validation. Share a piece of validation code and explain why you chose to validate on the server. Here is your category controller validation block:
+
+```js
+exports.createCategory = [
+  body('name').trim().notEmpty().withMessage('Name is required')
+    .isLength({ max: 100 }).withMessage('Name must be at most 100 characters')
+    .isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { name } = req.body;
+    if (!errors.isEmpty()) {
+      return res.status(422).render('categories/new', { errors: errors.array(), old: { name } });
+    }
+    try {
+      await categoryModel.createCategory(name);
+      req.flash('success', 'Category created');
+      res.redirect('/categories');
+    } catch (err) {
+      res.status(500).send('Database error');
+    }
+  }
+];
+```
+
+Student: I validate the name server-side because client validation can be bypassed. I also need a minimum length check only on the server, as the assignment requested no client-side minimum. If validation fails, the controller re-renders the form with the error list.
+
+AI Coach: Good point — server-side validation is the final gatekeeper for request data. What happens if a user submits bad data directly to the endpoint? 
+
+Student: The validation middleware catches invalid values, and the controller returns a 422 response with error messages instead of saving bad data to the database.
+
+AI Coach: Exactly. That covers all the required topics: handling form submissions, update forms, sessions/flash messages, and server-side validation.
+
+Student: Yes, thank you. I think that completes the session.
+
+AI Coach: Great work. This transcript includes the required code discussion and should be ready for upload.

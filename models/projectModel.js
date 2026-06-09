@@ -5,29 +5,29 @@ function getDb() {
 }
 
 module.exports = {
-  createProject(name, description, organizationId) {
+  async createProject(name, description, date, organizationId) {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.run(
-        'INSERT INTO projects (name, description, organization_id) VALUES (?, ?, ?)',
-        [name, description || '', organizationId || null],
+        'INSERT INTO projects (name, description, date, organization_id) VALUES (?, ?, ?, ?)',
+        [name, description || '', date || '', organizationId || null],
         function (err) {
           db.close();
           if (err) return reject(err);
-          resolve({ id: this.lastID, name, description, organizationId });
+          resolve({ id: this.lastID, name, description, date, organizationId });
         }
       );
     });
   },
 
-  getAllProjects() {
+  async getAllProjects() {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.all(
         `SELECT p.*, o.name AS organizationName
          FROM projects p
          LEFT JOIN organizations o ON p.organization_id = o.id
-         ORDER BY p.name`,
+         ORDER BY p.date, p.name`,
         [],
         (err, rows) => {
           db.close();
@@ -38,7 +38,7 @@ module.exports = {
     });
   },
 
-  getProjectById(id) {
+  async getProjectById(id) {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.get(
@@ -56,12 +56,12 @@ module.exports = {
     });
   },
 
-  updateProject(id, name, description, organizationId) {
+  async updateProject(id, name, description, date, organizationId) {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.run(
-        'UPDATE projects SET name = ?, description = ?, organization_id = ? WHERE id = ?',
-        [name, description || '', organizationId || null, id],
+        'UPDATE projects SET name = ?, description = ?, date = ?, organization_id = ? WHERE id = ?',
+        [name, description || '', date || '', organizationId || null, id],
         function (err) {
           db.close();
           if (err) return reject(err);
@@ -71,7 +71,7 @@ module.exports = {
     });
   },
 
-  getProjectCategoryIds(projectId) {
+  async getProjectCategoryIds(projectId) {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.all(
@@ -86,7 +86,7 @@ module.exports = {
     });
   },
 
-  setProjectCategories(projectId, categoryIds) {
+  async setProjectCategories(projectId, categoryIds) {
     return new Promise((resolve, reject) => {
       const db = getDb();
       db.serialize(() => {

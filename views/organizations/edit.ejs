@@ -6,6 +6,18 @@
       <label for="name">Name</label>
       <input id="name" name="name" type="text" maxlength="100" value="<%= old.name || '' %>" required>
     </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" maxlength="500" required><%= old.description || '' %></textarea>
+    </div>
+    <div>
+      <label for="city">City</label>
+      <input id="city" name="city" type="text" maxlength="100" value="<%= old.city || '' %>" required>
+    </div>
+    <div>
+      <label for="state">State</label>
+      <input id="state" name="state" type="text" maxlength="2" value="<%= old.state || '' %>" required placeholder="e.g., UT">
+    </div>
     <% if (errors && errors.length) { %>
       <ul>
         <% errors.forEach(function(e){ %>

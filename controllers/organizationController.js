@@ -16,14 +16,17 @@ exports.showNewOrganizationForm = (req, res) => {
 
 exports.createOrganization = [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be at most 100 characters').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
+  body('description').trim().notEmpty().withMessage('Description is required').isLength({ max: 500 }).withMessage('Description must be at most 500 characters'),
+  body('city').trim().notEmpty().withMessage('City is required').isLength({ max: 100 }).withMessage('City must be at most 100 characters'),
+  body('state').trim().notEmpty().withMessage('State is required').isLength({ max: 2 }).withMessage('State must be a 2-letter code'),
   async (req, res) => {
     const errors = validationResult(req);
-    const { name } = req.body;
+    const { name, description, city, state } = req.body;
     if (!errors.isEmpty()) {
-      return res.status(422).render('organizations/new', { errors: errors.array(), old: { name } });
+      return res.status(422).render('organizations/new', { errors: errors.array(), old: { name, description, city, state } });
     }
     try {
-      await organizationModel.createOrganization(name);
+      await organizationModel.createOrganization(name, description, city, state);
       req.flash('success', 'Organization created');
       res.redirect('/organizations');
     } catch (err) {
@@ -54,15 +57,18 @@ exports.showOrganizationDetails = async (req, res) => {
 
 exports.updateOrganization = [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be at most 100 characters').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
+  body('description').trim().notEmpty().withMessage('Description is required').isLength({ max: 500 }).withMessage('Description must be at most 500 characters'),
+  body('city').trim().notEmpty().withMessage('City is required').isLength({ max: 100 }).withMessage('City must be at most 100 characters'),
+  body('state').trim().notEmpty().withMessage('State is required').isLength({ max: 2 }).withMessage('State must be a 2-letter code'),
   async (req, res) => {
     const errors = validationResult(req);
-    const { name } = req.body;
+    const { name, description, city, state } = req.body;
     const id = req.params.id;
     if (!errors.isEmpty()) {
-      return res.status(422).render('organizations/edit', { errors: errors.array(), old: { id, name } });
+      return res.status(422).render('organizations/edit', { errors: errors.array(), old: { id, name, description, city, state } });
     }
     try {
-      await organizationModel.updateOrganization(id, name);
+      await organizationModel.updateOrganization(id, name, description, city, state);
       req.flash('success', 'Organization updated');
       res.redirect('/organizations');
     } catch (err) {

@@ -8,7 +8,11 @@
     </div>
     <div>
       <label for="description">Description</label>
-      <input id="description" name="description" type="text" maxlength="500" value="<%= old.description || '' %>">
+      <textarea id="description" name="description" maxlength="500"><%= old.description || '' %></textarea>
+    </div>
+    <div>
+      <label for="date">Service Date</label>
+      <input id="date" name="date" type="date" value="<%= old.date || '' %>" required>
     </div>
     <div>
       <label for="organization_id">Organization</label>

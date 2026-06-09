@@ -118,7 +118,7 @@ button,
 }
 
 .menu-toggle {
-    display: none;
+    display: flex;
     border: none;
     background: var(--surface);
     width: 2.75rem;
