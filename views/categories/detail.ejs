@@ -1,0 +1,10 @@
+<%- include('../partials/header', { title: 'Category Details' }) %>
+<section>
+  <div class="section-header">
+    <h2><%= category.name %></h2>
+  </div>
+  <p><strong>ID:</strong> <%= category.id %></p>
+  <a class="button" href="/edit-category/<%= category.id %>">Edit category</a>
+  <a class="button" href="/categories">Back to categories</a>
+</section>
+<%- include('../partials/footer') %>

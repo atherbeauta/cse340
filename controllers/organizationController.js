@@ -42,6 +42,16 @@ exports.showEditOrganizationForm = async (req, res) => {
   }
 };
 
+exports.showOrganizationDetails = async (req, res) => {
+  try {
+    const organization = await organizationModel.getOrganizationById(req.params.id);
+    if (!organization) return res.status(404).send('Organization not found');
+    res.render('organizations/detail', { organization });
+  } catch (err) {
+    res.status(500).send('Database error');
+  }
+};
+
 exports.updateOrganization = [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }).withMessage('Name must be at most 100 characters').isLength({ min: 3 }).withMessage('Name must be at least 3 characters'),
   async (req, res) => {

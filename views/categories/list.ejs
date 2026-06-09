@@ -5,7 +5,10 @@
   </div>
   <ul>
     <% categories.forEach(function(cat){ %>
-      <li><%= cat.name %> - <a href="/edit-category/<%= cat.id %>">Edit</a></li>
+      <li>
+        <strong><a href="/categories/<%= cat.id %>"><%= cat.name %></a></strong>
+        - <a href="/edit-category/<%= cat.id %>">Edit</a>
+      </li>
     <% }) %>
   </ul>
   <a class="button" href="/new-category">Create new category</a>

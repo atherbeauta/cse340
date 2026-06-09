@@ -1,0 +1,12 @@
+<%- include('../partials/header', { title: 'Organization Details' }) %>
+<section>
+  <div class="section-header">
+    <h2><%= organization.name %></h2>
+  </div>
+  <p><strong>Description:</strong> <%= organization.description %></p>
+  <p><strong>Location:</strong> <%= organization.city %>, <%= organization.state %></p>
+  <p><strong>ID:</strong> <%= organization.id %></p>
+  <a class="button" href="/edit-organization/<%= organization.id %>">Edit organization</a>
+  <a class="button" href="/organizations">Back to organizations</a>
+</section>
+<%- include('../partials/footer') %>

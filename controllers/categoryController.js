@@ -52,6 +52,16 @@ exports.updateCategory = [
   }
 ];
 
+exports.showCategoryDetails = async (req, res) => {
+  try {
+    const category = await categoryModel.getCategoryById(req.params.id);
+    if (!category) return res.status(404).send('Category not found');
+    res.render('categories/detail', { category });
+  } catch (err) {
+    res.status(500).send('Database error');
+  }
+};
+
 exports.listCategories = async (req, res) => {
   try {
     const categories = await categoryModel.getAllCategories();
