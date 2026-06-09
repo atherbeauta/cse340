@@ -4,7 +4,7 @@
     <h2><%= project.name %></h2>
   </div>
   <% if (project.organizationName) { %>
-    <p><strong>Organization:</strong> <%= project.organizationName %></p>
+    <p><strong>Organization:</strong> <a href="/organizations/<%= project.organization_id %>"><%= project.organizationName %></a></p>
   <% } %>
   <% if (project.description) { %>
     <p><strong>Description:</strong> <%= project.description %></p>
@@ -13,12 +13,14 @@
   <ul>
     <% if (assignedCategories.length) { %>
       <% assignedCategories.forEach(function(category){ %>
-        <li><%= category.name %></li>
+        <li><a href="/categories/<%= category.id %>"><%= category.name %></a></li>
       <% }) %>
     <% } else { %>
       <li>No categories assigned.</li>
     <% } %>
   </ul>
   <a class="button" href="/projects/<%= project.id %>/categories">Update categories</a>
+  <a class="button" href="/edit-project/<%= project.id %>">Edit project</a>
+  <a class="button" href="/projects">Back to projects</a>
 </section>
 <%- include('../partials/footer') %>

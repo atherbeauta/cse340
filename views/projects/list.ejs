@@ -8,7 +8,7 @@
       <li>
         <strong><a href="/projects/<%= project.id %>"><%= project.name %></a></strong>
         <% if (project.organizationName) { %>
-          <span> — <%= project.organizationName %></span>
+          <span> — <a href="/organizations/<%= project.organization_id %>"><%= project.organizationName %></a></span>
         <% } %>
         <a href="/edit-project/<%= project.id %>">Edit</a>
       </li>
