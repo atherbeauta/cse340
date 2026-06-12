@@ -1,18 +1,13 @@
 const dbHelper = require('../db/database');
 
-function getDb() {
-  return dbHelper.getDb();
-}
-
 module.exports = {
   async createProject(name, description, date, organizationId) {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.run(
         'INSERT INTO projects (name, description, date, organization_id) VALUES (?, ?, ?, ?)',
         [name, description || '', date || '', organizationId || null],
         function (err) {
-          db.close();
           if (err) return reject(err);
           resolve({ id: this.lastID, name, description, date, organizationId });
         }
@@ -22,7 +17,7 @@ module.exports = {
 
   async getAllProjects() {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.all(
         `SELECT p.*, o.name AS organizationName
          FROM projects p
@@ -30,7 +25,6 @@ module.exports = {
          ORDER BY p.date, p.name`,
         [],
         (err, rows) => {
-          db.close();
           if (err) return reject(err);
           resolve(rows);
         }
@@ -40,7 +34,7 @@ module.exports = {
 
   async getProjectById(id) {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.get(
         `SELECT p.*, o.name AS organizationName
          FROM projects p
@@ -48,7 +42,6 @@ module.exports = {
          WHERE p.id = ?`,
         [id],
         (err, row) => {
-          db.close();
           if (err) return reject(err);
           resolve(row);
         }
@@ -58,12 +51,11 @@ module.exports = {
 
   async updateProject(id, name, description, date, organizationId) {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.run(
         'UPDATE projects SET name = ?, description = ?, date = ?, organization_id = ? WHERE id = ?',
         [name, description || '', date || '', organizationId || null, id],
         function (err) {
-          db.close();
           if (err) return reject(err);
           resolve(this.changes);
         }
@@ -73,12 +65,11 @@ module.exports = {
 
   async getProjectCategoryIds(projectId) {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.all(
         'SELECT category_id FROM project_categories WHERE project_id = ?',
         [projectId],
         (err, rows) => {
-          db.close();
           if (err) return reject(err);
           resolve(rows.map(r => r.category_id));
         }
@@ -88,7 +79,7 @@ module.exports = {
 
   async setProjectCategories(projectId, categoryIds) {
     return new Promise((resolve, reject) => {
-      const db = getDb();
+      const db = dbHelper.getDb();
       db.serialize(() => {
         db.run('DELETE FROM project_categories WHERE project_id = ?', [projectId], err => {
           if (err) return reject(err);
@@ -99,7 +90,6 @@ module.exports = {
             });
           }
           stmt.finalize(err2 => {
-            db.close();
             if (err2) return reject(err2);
             resolve();
           });
