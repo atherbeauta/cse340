@@ -51,7 +51,9 @@ app.use('/', organizationRoutes);
 app.use('/', projectRoutes);
 
 app.get('/', (req, res) => {
-  res.redirect('/projects');
+  res.render('index', {
+    title: 'Home'
+  });
 });
 
 app.use((req, res) => {

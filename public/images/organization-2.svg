@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Health Network illustration">
+  <rect width="400" height="240" fill="#eefaf3"/>
+  <circle cx="160" cy="120" r="48" fill="#5fc6a3"/>
+  <path d="M160 88 L160 152 M128 120 L192 120" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+  <rect x="220" y="84" width="110" height="70" rx="12" fill="#b9ead7"/>
+  <rect x="230" y="100" width="90" height="12" rx="6" fill="#ffffff" opacity="0.8"/>
+  <rect x="230" y="120" width="70" height="12" rx="6" fill="#ffffff" opacity="0.7"/>
+</svg>

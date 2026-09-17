@@ -1,0 +1,24 @@
+<%- include('partials/header', { title: 'Home' }) %>
+<section>
+  <div class="hero-card">
+    <span class="eyebrow">CSE340</span>
+    <h2>Welcome to the community service portal</h2>
+    <p>
+      This application helps families, organizations, and volunteers organize projects,
+      connect with services, and manage categories in one simple workspace.
+    </p>
+    <a class="button" href="/projects">View projects</a>
+  </div>
+</section>
+
+<section>
+  <div class="section-header">
+    <h2>Explore the site</h2>
+  </div>
+  <div class="category-grid">
+    <div class="category-card"><a href="/organizations"><span>Organizations</span></a></div>
+    <div class="category-card"><a href="/projects"><span>Projects</span></a></div>
+    <div class="category-card"><a href="/categories"><span>Categories</span></a></div>
+  </div>
+</section>
+<%- include('partials/footer') %>

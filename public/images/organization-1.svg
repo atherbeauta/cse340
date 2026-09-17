@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Community Center illustration">
+  <rect width="400" height="240" fill="#dfeeff"/>
+  <rect x="50" y="70" width="300" height="120" rx="12" fill="#7aa7ff"/>
+  <rect x="80" y="95" width="240" height="18" rx="9" fill="#ffffff" opacity="0.85"/>
+  <rect x="80" y="125" width="160" height="14" rx="7" fill="#ffffff" opacity="0.7"/>
+  <rect x="80" y="147" width="200" height="14" rx="7" fill="#ffffff" opacity="0.7"/>
+  <circle cx="335" cy="110" r="26" fill="#f3b63f"/>
+</svg>

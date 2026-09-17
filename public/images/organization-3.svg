@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Volunteer Program illustration">
+  <rect width="400" height="240" fill="#fff2db"/>
+  <rect x="55" y="80" width="290" height="100" rx="18" fill="#f1bb6f"/>
+  <path d="M112 150 L150 110 L188 150 L226 90 L264 150" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="112" cy="150" r="16" fill="#ffffff"/>
+  <circle cx="188" cy="150" r="16" fill="#ffffff"/>
+  <circle cx="264" cy="150" r="16" fill="#ffffff"/>
+</svg>

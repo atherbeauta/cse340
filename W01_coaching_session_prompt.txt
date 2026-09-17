@@ -1,0 +1,126 @@
+
+================================================================================
+W01 COACHING SESSION TRANSCRIPT: SERVER-SIDE PROGRAMMING
+Student Name: Kazadi Athanase Muamba
+Course: CSE 340 - Web Backend Development
+================================================================================
+
+AI Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today. To kick things off, could you please confirm your name so we can officially start our session?
+
+Athanase: Hi! My name is Kazadi Athanase Muamba, and I am ready to start the coaching session.
+
+AI Coach: Welcome Athanase! It's great to work with you today. Let's dive into our first topic: Express Routing. Could you please paste a relevant Node.js code snippet from your server.js file that handles routing, and explain what it does?
+
+Athanase: Sure! Here is the route snippet from my server.js file:
+
+```javascript
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Route handler for the homepage
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Home Page - CSE340' });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+In this code, app.get('/', ...) listens for HTTP GET requests directed at the root URL of the application. When a user navigates to the homepage, Express intercepts the request and executes the callback function. Inside, res.render('index', ...) renders the index.ejs view template and passes a dynamic object containing the page title to the template engine.
+
+AI Coach: Excellent explanation, Athanase! You clearly explained how app.get intercepts HTTP requests and uses res.render to pass data to EJS. Why did you choose to pass the title variable inside an object to the view instead of hardcoding it in the EJS template?
+
+Athanase: Passing the title dynamically from the server keeps the view flexible and reusable. If I decide to change the title logic or fetch it from a database later, I only need to modify the server controller code without touching the visual presentation template.
+
+AI Coach: That is a great application of the separation of concerns principle! Now, let's move on to Topic 2: JavaScript Language Principles. Could you share a JavaScript snippet from your project logic that demonstrates key language concepts (like async/await, arrow functions, or array manipulation), and explain how it works?
+
+Athanase: Here is a JavaScript snippet I wrote for filtering project data:
+
+JavaScript
+// Asynchronous function to retrieve and filter projects by category ID
+const getProjectsByCategory = async (categoryId, allProjects) => {
+    try {
+        const filteredProjects = allProjects.filter(project => project.categoryId === categoryId);
+        return filteredProjects;
+    } catch (error) {
+        console.error(`Error processing projects: ${error.message}`);
+        return [];
+    }
+};
+This snippet demonstrates modern JavaScript features. First, I used an arrow function assigned to a const identifier. The function is declared as async to handle data operations safely. Inside, I used the higher-order array method .filter(), which takes a predicate arrow function project => project.categoryId === categoryId to return only the items matching the given category ID. Finally, a try...catch block ensures proper error handling so the app does not crash if an exception occurs.
+
+AI Coach: That's a very clean snippet, Athanase. Using .filter() with an arrow function makes the code concise and readable. Why did you choose to wrap this operation in a try...catch block even though .filter() is synchronous?
+
+Athanase: I wrapped it in a try...catch block because, in a real backend environment, allProjects could potentially be undefined or null if a database query fails before reaching this function. The try...catch prevents unhandled runtime exceptions and allows the application to fail gracefully by returning an empty array.
+
+AI Coach: Great defensive programming thinking! Now let's discuss Topic 3: EJS Partials and Pages. Could you paste a code snippet showing how you structured your EJS templates, particularly how you incorporate partials into your main pages?
+
+Athanase: Here is a snippet from my views/index.ejs file:
+
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main>
+        <h1>Welcome to CSE340 Project Portal</h1>
+        <p>Select a category or organization to browse details.</p>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>
+In this template, I use output tag <%= title %> to safely render the dynamic page title passed from Express. For layout structure, I use the unescaped raw output tag <%- include('partials/header') %> and <%- include('partials/footer') %> to pull in modular EJS partials.
+
+AI Coach: Perfect! Can you explain the difference between using <%= %> and <%- %> in EJS, and why you used <%- %> specifically for including partials?
+
+Athanase: <%= %> escapes HTML characters before rendering them to protect against Cross-Site Scripting (XSS) attacks, making it safe for text data like user inputs or titles. On the other hand, <%- %> renders raw HTML without escaping it. We must use <%- %> for include() statements so Node.js renders the embedded HTML tags inside the partial file rather than printing raw HTML tags as plain text.
+
+AI Coach: Exactly right! You have a solid grasp of EJS syntax and security considerations. Finally, let's cover Topic 4: Frontend CSS. Could you paste a snippet from your CSS file (e.g., styles.css) and explain how you organized your styling rules?
+
+Athanase: Here is an excerpt from my public/styles.css stylesheet:
+
+CSS
+:root {
+    --primary-blue: #002e5d;
+    --accent-blue: #0062b8;
+    --bg-light: #f4f6f8;
+    --text-dark: #333333;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+In this stylesheet, I declared CSS custom properties (variables) inside the :root pseudo-class to maintain consistent branding across the web app. I applied global reset styling on the body tag and centered the main layout using max-width: 1200px combined with margin: 2rem auto.
+
+AI Coach: Excellent use of CSS variables! What advantage does defining custom properties like --primary-blue give you when scaling a project?
+
+Athanase: Defining CSS variables allows central theme management. If I need to change the color scheme or update brand guidelines, I only have to update the variable value in :root once, and the change automatically cascades across the entire website.
+
+AI Coach: Fantastic work today, Athanase! We have successfully covered all four mandatory topics: Express Routing, JavaScript Language Principles, EJS Partials and Pages, and Frontend CSS. You've demonstrated a strong understanding of your codebase and backend concepts. This completes our coaching session.
+
+================================================================================
