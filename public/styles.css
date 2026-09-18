@@ -1,0 +1,15 @@
+@import url('/css-assets/styles.css');
+
+.hero-image {
+  display: block;
+  width: min(100%, 18rem);
+  margin: 0 auto 1.5rem;
+}
+
+.site-footer {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1rem;
+  color: var(--text-muted, #556d8a);
+  text-align: center;
+}
