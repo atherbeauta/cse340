@@ -27,6 +27,11 @@ function initializeDatabase() {
         db.run('CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)');
         db.run('CREATE TABLE IF NOT EXISTS project_categories (project_id INTEGER NOT NULL, category_id INTEGER NOT NULL, PRIMARY KEY (project_id, category_id), FOREIGN KEY (project_id) REFERENCES projects(id), FOREIGN KEY (category_id) REFERENCES categories(id))', (err) => {
           if (err) return reject(err);
+
+          db.run("UPDATE categories SET name = 'Environmental' WHERE name = 'Environment'");
+          db.run("UPDATE categories SET name = 'Educational' WHERE name = 'Education'");
+          db.run("UPDATE categories SET name = 'Health and Wellness' WHERE name = 'Health'");
+          db.run("INSERT OR IGNORE INTO categories (name) VALUES ('Community Service')");
           
           // Insert sample data if tables are empty
           db.get("SELECT COUNT(*) as count FROM organizations", (err, row) => {
@@ -48,9 +53,10 @@ function initializeDatabase() {
                 ('Nutrition Classes', 'Teach healthy cooking and meal planning.', '2026-08-05', 2)`);
               
               db.run(`INSERT INTO categories (name) VALUES
-                ('Environment'),
-                ('Education'),
-                ('Health')`);
+                ('Environmental'),
+                ('Educational'),
+                ('Community Service'),
+                ('Health and Wellness')`);
               
               db.run(`INSERT INTO project_categories (project_id, category_id) VALUES
                 (1, 2), (2, 1), (3, 2), (4, 1), (5, 2),

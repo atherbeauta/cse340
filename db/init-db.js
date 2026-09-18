@@ -65,9 +65,10 @@ db.serialize(() => {
     ('Nutrition Classes', 'Teach healthy cooking and meal planning.', '2026-08-05', 2)`);
   
   db.run(`INSERT INTO categories (name) VALUES
-    ('Environment'),
-    ('Education'),
-    ('Health')`);
+    ('Environmental'),
+    ('Educational'),
+    ('Community Service'),
+    ('Health and Wellness')`);
   
   db.run(`INSERT INTO project_categories (project_id, category_id) VALUES
     (1, 2),
@@ -75,11 +76,11 @@ db.serialize(() => {
     (3, 2),
     (4, 1),
     (5, 2),
-    (6, 3),
-    (7, 3),
-    (8, 3),
-    (9, 3),
-    (10, 3)`);
+    (6, 4),
+    (7, 4),
+    (8, 4),
+    (9, 4),
+    (10, 4)`);
 });
 
 db.close(err => {
