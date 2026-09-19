@@ -1,23 +1,19 @@
-const dbHelper = require('../db/database');
+import db from '../db/database.js';
 
-exports.getAllOrganizations = async function () {
-  const db = dbHelper.getDb();
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM organizations ORDER BY name', [], (err, rows) => {
-      db.close();
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
+export const getAllOrganizations = async () => {
+  const result = await db.query('SELECT * FROM organizations ORDER BY name');
+  return result.rows;
 };
 
-exports.getOrganizationById = async function (id) {
-  const db = dbHelper.getDb();
-  return new Promise((resolve, reject) => {
-    db.get('SELECT * FROM organizations WHERE id = ?', [id], (err, row) => {
-      db.close();
-      if (err) return reject(err);
-      resolve(row);
-    });
-  });
+export const getOrganizationById = async (id) => {
+  const result = await db.query('SELECT * FROM organizations WHERE id = $1', [id]);
+  return result.rows[0];
+};
+
+export const getProjectsByOrganizationId = async (id) => {
+  const result = await db.query(
+    'SELECT * FROM projects WHERE organization_id = $1 ORDER BY date',
+    [id]
+  );
+  return result.rows;
 };

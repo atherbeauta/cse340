@@ -1,27 +1,35 @@
-const express = require('express');
-const path = require('path');
-const db = require('./db/database');
-const categoriesModel = require('./models/categories');
-const organizationsModel = require('./models/organizations');
-const projectsModel = require('./models/projects');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { getAllCategories } from './models/categories.js';
+import { getAllOrganizations } from './models/organizations.js';
+import { getUpcomingProjects } from './models/projects.js';
+import router from './routes.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
-
-db.initializeDatabase();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-  res.redirect('/organizations');
+app.get('/categories', async (req, res) => {
+  try {
+    const categories = await getAllCategories();
+    res.render('categories', { categories, title: 'Categories' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error retrieving categories');
+  }
 });
 
 app.get('/organizations', async (req, res) => {
   try {
-    const organizations = await organizationsModel.getAllOrganizations();
-    res.render('organizations', { organizations });
+    const organizations = await getAllOrganizations();
+    res.render('organizations', { organizations, title: 'Organizations' });
   } catch (err) {
     res.status(500).send('Database error retrieving organizations');
   }
@@ -29,21 +37,14 @@ app.get('/organizations', async (req, res) => {
 
 app.get('/projects', async (req, res) => {
   try {
-    const projects = await projectsModel.getAllProjects();
-    res.render('projects', { projects });
+    const projects = await getUpcomingProjects(5);
+    res.render('projects', { projects, title: 'Projects' });
   } catch (err) {
     res.status(500).send('Database error retrieving projects');
   }
 });
 
-app.get('/categories', async (req, res) => {
-  try {
-    const categories = await categoriesModel.getAllCategories();
-    res.render('categories', { categories });
-  } catch (err) {
-    res.status(500).send('Database error retrieving categories');
-  }
-});
+app.use(router);
 
 app.use((req, res) => {
   res.status(404).render('404', { path: req.path });

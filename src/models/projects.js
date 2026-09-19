@@ -1,19 +1,25 @@
-const dbHelper = require('../db/database');
+import db from '../db/database.js';
 
-exports.getAllProjects = async function () {
-  const db = dbHelper.getDb();
-  return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT p.id, p.name, p.description, p.date, o.name AS organization_name
-       FROM projects p
-       JOIN organizations o ON p.organization_id = o.id
-       ORDER BY p.date`,
-      [],
-      (err, rows) => {
-        db.close();
-        if (err) return reject(err);
-        resolve(rows);
-      }
-    );
-  });
+export const getUpcomingProjects = async (limit = 5) => {
+  const result = await db.query(
+    `SELECT project.id, project.name, project.description, project.date,
+            organization.name AS organization_name
+     FROM projects AS project
+     JOIN organizations AS organization ON project.organization_id = organization.id
+     ORDER BY project.date
+     LIMIT $1`,
+    [limit]
+  );
+  return result.rows;
+};
+
+export const getProjectDetails = async (id) => {
+  const result = await db.query(
+    `SELECT project.*, organization.name AS organization_name
+     FROM projects AS project
+     JOIN organizations AS organization ON project.organization_id = organization.id
+     WHERE project.id = $1`,
+    [id]
+  );
+  return result.rows[0];
 };
