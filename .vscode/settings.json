@@ -1,0 +1,13 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "git remote": true,
+        "/^node -e \"fetch\\('http://localhost:3105',\\{redirect:'manual'\\}\\)\\.then\\(r=>\\{if\\(r\\.status!==302\\|\\|r\\.headers\\.get\\('location'\\)!=='/organizations'\\)throw Error\\('unexpected root response '\\+r\\.status\\);console\\.log\\('HTTP root smoke test passed: 302 /organizations'\\);\\}\\)\\.catch\\(e=>\\{console\\.error\\(e\\);process\\.exitCode=1\\}\\)\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^git fetch origin$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

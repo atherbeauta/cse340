@@ -1,0 +1,123 @@
+================================================================================
+W02 COACHING SESSION TRANSCRIPT: DATABASE RETRIEVAL
+Student Name: Kazadi Athanase Muamba
+Course: CSE 340 - Web Backend Development
+================================================================================
+
+AI COACH: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today. To kick things off, could you please confirm your name so we can officially start our session?
+
+ATHANASE: Hi! My name is Kazadi Athanase Muamba, and I am ready to start the W02 coaching session.
+
+AI COACH: Welcome Athanase! It's great to work with you today. Let's dive into our first topic: Relational Database Design and Structure. Could you please share a snippet of SQL from your setup.sql file showing how you structured your tables and relationships for categories, and explain your design choices?
+
+ATHANASE: Sure! Here is the SQL snippet from my src/setup.sql file:
+
+```sql
+-- Categories table
+CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Junction table for Many-to-Many relationship between Projects and Categories
+CREATE TABLE IF NOT EXISTS project_categories (
+    project_id INT REFERENCES projects(id) ON DELETE CASCADE,
+    category_id INT REFERENCES categories(id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- Seed initial categories
+INSERT INTO categories (name) VALUES 
+('Education'),
+('Community Outreach'),
+('Healthcare')
+ON CONFLICT (name) DO NOTHING;
+In this schema, each category has a unique primary key id and a name. Since a project can belong to multiple categories and a category can contain multiple projects, I created a junction table project_categories. It combines project_id and category_id as a composite primary key with foreign key constraints to enforce referential integrity.
+
+AI COACH: Excellent explanation, Athanase! Why did you choose to use a junction table instead of adding a category_id column directly inside the projects table?
+
+ATHANASE: Adding a category_id directly to the projects table would restrict each project to a single category. Using a junction table implements a true Many-to-Many relationship, allowing a single project to be associated with multiple categories without duplicating project records in the database.
+
+AI COACH: Perfect reasoning! Now let's move on to Topic 2: Server-Side Data Access Logic (Node.js). Could you share a JavaScript snippet from your model file (e.g., src/models/categories.js) that retrieves category data, and explain how the data flow works?
+
+ATHANASE: Here is the code from my src/models/categories.js file:
+
+JavaScript
+const pool = require('../db/database');
+
+// Retrieve all categories from the database
+const getAllCategories = async () => {
+    try {
+        const sql = 'SELECT * FROM categories ORDER BY name ASC';
+        const result = await pool.query(sql);
+        return result.rows;
+    } catch (error) {
+        console.error(`Database Query Error in getAllCategories: ${error.message}`);
+        throw error;
+    }
+};
+
+module.exports = { getAllCategories };
+This model function uses the PostgreSQL pg pool module to execute asynchronous SQL queries. await pool.query(sql) sends the query to PostgreSQL and waits for the database response. The rows returned by the query are stored in result.rows as an array of objects, which is then returned to the controller. The try...catch block intercepts database connection failures or syntax errors.
+
+AI COACH: That is very clean and modular code, Athanase! Why is it beneficial to isolate this database query inside src/models/categories.js instead of placing it directly inside server.js?
+
+ATHANASE: Separating database logic into model files follows the Model-View-Controller (MVC) architectural pattern. It makes the code reusable across different routes, easier to maintain, and allows testing database logic independently from server routing.
+
+AI COACH: Great application of software design patterns! Now let's cover Topic 3: Express Server Logic and Routing. Could you paste a code snippet showing how your Express route handler calls this model function and passes the data to the view?
+
+ATHANASE: Here is the route handler from my server.js file:
+
+JavaScript
+const express = require('express');
+const app = express();
+const { getAllCategories } = require('./models/categories');
+
+// Route handler for categories page
+app.get('/categories', async (req, res, next) => {
+    try {
+        const categories = await getAllCategories();
+        res.render('categories', { 
+            title: 'Service Categories', 
+            categories 
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+When a GET request hits the /categories URL, Express triggers this asynchronous handler. It awaits getAllCategories() to fetch the category list from the model layer and then invokes res.render('categories', ...). This compiles the categories.ejs template into HTML while injecting { title, categories } as local variables.
+
+AI COACH: Excellent explanation! What happens if getAllCategories() throws an error during execution?
+
+ATHANASE: If an error occurs during the database query, execution immediately jumps to the catch block. Calling next(error) forwards the exception to Express's global error-handling middleware, preventing the application from freezing or crashing silently.
+
+AI COACH: Spot on! Now let's finish with Topic 4: Client-Side Rendering (EJS Templates). Could you paste a snippet from your src/views/categories.ejs file showing how you loop through and display the retrieved database categories?
+
+ATHANASE: Here is a snippet from my src/views/categories.ejs template:
+
+HTML
+<%- include('partials/header') %>
+
+<main class="container">
+    <h1><%= title %></h1>
+    
+    <div class="actions">
+        <a href="/categories/add" class="btn-primary">Add New Category</a>
+    </div>
+
+    <ul class="category-list">
+        <% categories.forEach(category => { %>
+            <li class="category-item">
+                <span><%= category.name %></span>
+                <a href="/categories/edit/<%= category.id %>" class="btn-secondary">Edit</a>
+            </li>
+        <% }); %>
+    </ul>
+</main>
+
+<%- include('partials/footer') %>
+This view uses EJS template syntax. <%- include('partials/header') %> dynamically includes common header layout elements. The JavaScript <% categories.forEach(...) %> loop iterates over the categories array sent from Express, rendering an HTML list item for each row. <%= category.name %> safely outputs the text content while escaping HTML to prevent XSS attacks.
+
+AI COACH: Fantastic work today, Athanase! We have successfully covered all four mandatory topics for W02: Relational Database Design, Server-Side Data Access Logic, Express Server Logic and Routing, and Client-Side EJS Rendering. You've demonstrated a complete end-to-end understanding of database retrieval in Node.js. This concludes our coaching session!
+
+================================================================================
