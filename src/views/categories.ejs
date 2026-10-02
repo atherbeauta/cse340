@@ -2,13 +2,13 @@
 <section>
   <div class="section-header">
     <h2>Categories</h2>
-    <p>Browse service project categories retrieved from the database.</p>
+    <a href="/categories/new">Add Category</a>
   </div>
   <ul class="item-list">
     <% categories.forEach((category) => { %>
       <li>
         <strong><%= category.name %></strong>
-        <a href="/category/<%= category.id %>">Edit</a>
+        <a href="/categories/<%= category.id %>/edit">Edit</a>
       </li>
     <% }) %>
   </ul>

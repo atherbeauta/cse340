@@ -1,24 +1,16 @@
-# CSE340 Assignment App
+# CSE340 W02 Database Retrieval
 
-Quick start:
+The application uses Express, EJS, and PostgreSQL. Its server, models, views, and schema are under `src/`.
 
-1. Install dependencies
+## Run locally
+
+1. Create a PostgreSQL database and set `DATABASE_URL` to its connection string.
+2. Apply the schema and seed data with `psql "$DATABASE_URL" -f src/setup.sql`.
+3. Install dependencies and start the server:
 
 ```bash
 npm install
-```
-
-2. Initialize the SQLite DB
-
-```bash
-mkdir data
-sqlite3 data/database.sqlite < db/init.sql
-```
-
-3. Start the app
-
-```bash
 npm start
 ```
 
-Open http://localhost:3000/categories
+Open `http://localhost:3001`. The organization, project, and category lists are available at `/organizations`, `/projects`, and `/categories`.

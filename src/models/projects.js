@@ -1,25 +1,19 @@
-import db from '../db/database.js';
+const db = require('../db/database');
 
-export const getUpcomingProjects = async (limit = 5) => {
-  const result = await db.query(
-    `SELECT project.id, project.name, project.description, project.date,
-            organization.name AS organization_name
-     FROM projects AS project
-     JOIN organizations AS organization ON project.organization_id = organization.id
-     ORDER BY project.date
-     LIMIT $1`,
-    [limit]
-  );
-  return result.rows;
-};
+async function getAllProjects() {
+  try {
+    const result = await db.query(
+      `SELECT project.id, project.name, project.description, project.date,
+              organization.name AS organization_name
+       FROM projects AS project
+       LEFT JOIN organizations AS organization ON project.organization_id = organization.id
+       ORDER BY project.date, project.name`
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Error retrieving projects:', error);
+    throw error;
+  }
+}
 
-export const getProjectDetails = async (id) => {
-  const result = await db.query(
-    `SELECT project.*, organization.name AS organization_name
-     FROM projects AS project
-     JOIN organizations AS organization ON project.organization_id = organization.id
-     WHERE project.id = $1`,
-    [id]
-  );
-  return result.rows[0];
-};
+module.exports = { getAllProjects };
