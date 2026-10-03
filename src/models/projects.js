@@ -10,9 +10,9 @@ async function getAllProjects() {
        ORDER BY project.date, project.name`
     );
     return result.rows;
-  } catch (error) {
-    console.error('Error retrieving projects:', error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 }
 

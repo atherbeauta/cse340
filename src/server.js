@@ -1,5 +1,7 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
+const db = require('./db/database');
 const { getAllCategories } = require('./models/categories');
 const { getAllOrganizations } = require('./models/organizations');
 const { getAllProjects } = require('./models/projects');
@@ -28,6 +30,7 @@ app.get('/organizations', async (req, res) => {
     const organizations = await getAllOrganizations();
     res.render('organizations', { organizations, title: 'Organizations' });
   } catch (err) {
+    console.error(err);
     res.status(500).send('Database error retrieving organizations');
   }
 });
@@ -45,6 +48,18 @@ app.use((req, res) => {
   res.status(404).render('404', { path: req.path });
 });
 
-app.listen(PORT, () => {
-  console.log(`W02 app running on http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    const setupSql = fs.readFileSync(path.join(__dirname, 'setup.sql'), 'utf8');
+    await db.query(setupSql);
+    app.listen(PORT, () => {
+      console.log(`W02 app running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to initialize PostgreSQL database:', err);
+    await db.end();
+    process.exitCode = 1;
+  }
+}
+
+startServer();
