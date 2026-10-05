@@ -1,0 +1,97 @@
+# W03 Coaching Session: Model-View-Controller Analysis
+**Student:** Kazadi Athanase Muamba  
+**Course:** CSE340 - Web Development II  
+
+---
+
+## 1. Models
+In our architecture, model files handle direct interaction with the PostgreSQL database. To keep queries safe and dynamic, parameters are passed using parameterized SQL queries with placeholders (`$1`, `$2`), preventing SQL injection attacks.
+
+### Code Snippet (`src/models/projects.js`):
+```javascript
+const pool = require('../db/database');
+
+// Model function accepting a parameter for SQL query execution
+async function getProjectById(id) {
+    try {
+        const query = `
+            SELECT p.id, p.name, p.description, p.organization_id, o.name AS organization_name
+            FROM projects p
+            JOIN organizations o ON p.organization_id = o.id
+            WHERE p.id = $1
+        `;
+        const result = await pool.query(query, [id]);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error fetching project by ID:', error);
+        throw error;
+    }
+}
+
+module.exports = { getProjectById };
+2. Views
+Our views use the EJS (Embedded JavaScript) templating engine to generate HTML dynamically. When rendering lists or items from the database, EJS interpolates dynamic values directly into links and DOM elements.
+
+Code Snippet (src/views/projects.ejs):
+Extrait de code
+<ul>
+  <% projects.forEach(project => { %>
+    <li>
+      <a href="/project/<%= project.id %>"><%= project.name %></a> - 
+      <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+    </li>
+  <% }); %>
+</ul>
+3. Controllers
+Controllers connect the Model and the View layer. They handle HTTP requests, process parameters sent through routes, fetch data using model functions, and pass that data to render the view.
+
+Code Snippet (src/server.js / Route Handler):
+JavaScript
+const projectModel = require('./models/projects');
+
+// Controller handling route parameter :id
+app.get('/project/:id', async (req, res, next) => {
+    try {
+        const projectId = req.params.id;
+        const project = await projectModel.getProjectById(projectId);
+        
+        if (!project) {
+            const err = new Error('Project not found');
+            err.status = 404;
+            return next(err);
+        }
+
+        res.render('project-details', { 
+            title: project.name, 
+            project 
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+4. Error Handling
+Our application implements a centralized error-handling strategy for both missing resources (404 Not Found) and internal server issues (500 Server Error).
+
+404 errors are caught using a middleware fallback when no route matches.
+
+500 errors are handled via a standard Express error-handling middleware (err, req, res, next).
+
+Code Snippet (src/server.js):
+JavaScript
+// 404 Middleware
+app.use((req, res, next) => {
+    res.status(404).render('error', { 
+        title: '404 - Page Not Found', 
+        message: 'The requested page could not be found.' 
+    });
+});
+
+// Centralized 500 Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    const status = err.status || 500;
+    res.status(status).render('error', { 
+        title: `${status} Error`, 
+        message: err.message || 'An unexpected error occurred on the server.' 
+    });
+});

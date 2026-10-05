@@ -1,0 +1,20 @@
+<%- include('partials/header', { title }) %>
+<p class="breadcrumb"><a href="/projects">Projects</a> <span aria-hidden="true">/</span> <%= project.name %></p>
+<section class="detail-heading">
+  <p class="eyebrow">Project</p>
+  <h1><%= project.name %></h1>
+  <p class="intro"><%= project.description || 'No description provided.' %></p>
+  <dl class="project-facts">
+    <div><dt>Date</dt><dd><%= project.date ? new Date(project.date).toLocaleDateString() : 'Not scheduled' %></dd></div>
+    <div><dt>Organization</dt><dd><% if (project.organization_id) { %><a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a><% } else { %>Not assigned<% } %></dd></div>
+  </dl>
+</section>
+<section class="related-section">
+  <div class="section-heading"><h2>Categories</h2><span class="count"><%= categories.length %></span></div>
+  <% if (categories.length) { %>
+    <ul class="tag-list">
+      <% categories.forEach((category) => { %><li><a href="/category/<%= category.id %>"><%= category.name %></a></li><% }) %>
+    </ul>
+  <% } else { %><p class="empty-state">No categories are assigned to this project.</p><% } %>
+</section>
+<%- include('partials/footer') %>
