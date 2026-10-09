@@ -6,11 +6,15 @@
   "scripts": {
     "start": "node src/w03-server.js",
     "start:w02": "node src/server.js",
+    "start:w03": "node src/w03-server.js",
     "dev": "nodemon src/w03-server.js"
   },
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
     "pg": "^8.23.0"
   },
   "devDependencies": {

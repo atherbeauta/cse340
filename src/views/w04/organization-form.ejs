@@ -1,0 +1,21 @@
+<%- include('../w03/partials/header', { title }) %>
+<p class="breadcrumb"><a href="/organizations">Organizations</a> <span aria-hidden="true">/</span> <%= title %></p>
+<section class="form-page">
+  <p class="eyebrow">Organization</p>
+  <h1><%= title %></h1>
+  <% if (errors.length) { %>
+    <div class="validation-errors" role="alert"><p>Please correct the following:</p><ul><% errors.forEach((item) => { %><li><%= item.msg %></li><% }) %></ul></div>
+  <% } %>
+  <form action="<%= action %>" method="post">
+    <div class="form-field">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" value="<%= old.name || '' %>" required minlength="3" maxlength="100" autocomplete="organization">
+    </div>
+    <div class="form-field">
+      <label for="website">Website <span>(optional)</span></label>
+      <input id="website" name="website" type="url" value="<%= old.website || '' %>" maxlength="255" placeholder="https://example.org">
+    </div>
+    <div class="form-actions"><button class="button-link" type="submit">Save organization</button><a href="/organizations">Cancel</a></div>
+  </form>
+</section>
+<%- include('../w03/partials/footer') %>

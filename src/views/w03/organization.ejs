@@ -3,6 +3,7 @@
 <section class="detail-heading">
   <p class="eyebrow">Organization</p>
   <h1><%= organization.name %></h1>
+  <a class="button-link" href="/organizations/<%= organization.id %>/edit">Edit organization</a>
   <% if (organization.website) { %><a class="external-link" href="<%= organization.website %>" target="_blank" rel="noopener noreferrer"><%= organization.website %> <span aria-hidden="true">↗</span></a><% } %>
 </section>
 <section class="related-section">

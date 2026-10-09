@@ -10,4 +10,9 @@ async function getAllOrganizations() {
   }
 }
 
-module.exports = { getAllOrganizations };
+async function getOrganizationById(id) {
+  const result = await db.query('SELECT * FROM organizations WHERE id = $1', [id]);
+  return result.rows[0] || null;
+}
+
+module.exports = { getAllOrganizations, getOrganizationById };

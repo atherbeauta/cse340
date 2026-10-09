@@ -95,6 +95,31 @@ h1 { margin: 0; font-size: clamp(32px, 6vw, 46px); line-height: 1.13; }
 .error-page h1 { max-width: 560px; }
 .button-link { display: inline-block; margin-top: 25px; padding: 11px 16px; border-radius: 3px; background: var(--green); color: white; font-size: 13px; font-weight: 700; text-decoration: none; }
 .button-link:hover { background: var(--green-dark); color: white; }
+.page-heading > .button-link { margin-top: 19px; }
+.flash-message, .validation-errors { margin: 0 0 24px; padding: 13px 16px; border-left: 3px solid; font-size: 13px; }
+.flash-message p, .validation-errors p { margin: 0; }
+.flash-message p + p { margin-top: 5px; }
+.flash-message.success { border-color: var(--green); background: #e6efe7; color: var(--green-dark); }
+.flash-message.error, .validation-errors { border-color: #b74f3c; background: #f8e9e5; color: #7d3024; }
+.validation-errors ul { margin: 8px 0 0; padding-left: 19px; }
+.validation-errors li + li { margin-top: 4px; }
+.form-page { max-width: 640px; }
+.form-page h1 { margin-bottom: 27px; }
+.form-page form { display: grid; gap: 21px; }
+.form-field { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; }
+.form-field > label, .form-field legend { color: var(--ink); font-size: 13px; font-weight: 700; }
+.form-field label span, .form-field legend span { color: var(--muted); font-size: 12px; font-weight: 400; }
+.form-field input:not([type="checkbox"]), .form-field textarea, .form-field select { width: 100%; min-height: 43px; padding: 10px 12px; border: 1px solid #cbd2ca; border-radius: 3px; background: white; color: var(--ink); font: inherit; font-size: 14px; }
+.form-field textarea { min-height: 112px; resize: vertical; }
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus { outline: 2px solid #7da58b; outline-offset: 1px; border-color: var(--green); }
+.category-options { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.category-options legend { grid-column: 1 / -1; margin-bottom: 2px; }
+.checkbox-option { display: flex; align-items: center; gap: 9px; color: #465049; font-size: 13px; }
+.checkbox-option input { width: 16px; height: 16px; accent-color: var(--green); }
+.field-note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 13px; }
+.form-actions { display: flex; align-items: center; gap: 19px; margin-top: 3px; }
+.form-actions .button-link { margin-top: 0; border: 0; cursor: pointer; font: inherit; font-size: 13px; }
+.form-actions > a { font-size: 13px; font-weight: 600; }
 .site-footer { display: flex; justify-content: space-between; gap: 16px; padding: 22px max(24px, calc((100vw - 1056px) / 2)); border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 
 @media (max-width: 620px) {

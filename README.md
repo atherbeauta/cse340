@@ -1,6 +1,6 @@
-# CSE340 W03 MVC Implementation
+# CSE340 MVC Application
 
-The W03 app uses Express, EJS, and PostgreSQL with separate model, controller, route, view, and stylesheet modules under `src/`. The Week 2 implementation remains available at `src/server.js` and through `npm run start:w02`.
+The default app is the W03 MVC implementation, using Express, EJS, and PostgreSQL with separate models, controllers, routes, and views. W02 remains available through `npm run start:w02`. W04 forms, sessions, and validation are available by running `node src/w04-server.js`.
 
 ## Run locally
 
@@ -13,4 +13,4 @@ npm install
 npm start
 ```
 
-Open `http://localhost:3001`. The organization, project, and category lists are available at `/organizations`, `/projects`, and `/categories`; individual records are available at `/organization/:id`, `/project/:id`, and `/category/:id`.
+Open `http://localhost:3001`. Lists are available at `/organizations`, `/projects`, and `/categories`; details are available at `/organization/:id`, `/project/:id`, and `/category/:id`.

@@ -1,0 +1,41 @@
+<%- include('../w03/partials/header', { title }) %>
+<p class="breadcrumb"><a href="/projects">Projects</a> <span aria-hidden="true">/</span> <%= title %></p>
+<section class="form-page">
+  <p class="eyebrow">Project</p>
+  <h1><%= title %></h1>
+  <% if (errors.length) { %>
+    <div class="validation-errors" role="alert"><p>Please correct the following:</p><ul><% errors.forEach((item) => { %><li><%= item.msg %></li><% }) %></ul></div>
+  <% } %>
+  <form action="<%= action %>" method="post">
+    <div class="form-field">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" value="<%= old.name || '' %>" required minlength="3" maxlength="100">
+    </div>
+    <div class="form-field">
+      <label for="description">Description <span>(optional)</span></label>
+      <textarea id="description" name="description" rows="4" maxlength="500"><%= old.description || '' %></textarea>
+    </div>
+    <div class="form-field">
+      <label for="date">Date <span>(optional)</span></label>
+      <input id="date" name="date" type="date" value="<%= old.date || '' %>">
+    </div>
+    <div class="form-field">
+      <label for="organization_id">Organization <span>(optional)</span></label>
+      <select id="organization_id" name="organization_id">
+        <option value="">No organization</option>
+        <% organizations.forEach((organization) => { %>
+          <option value="<%= organization.id %>" <%= String(old.organization_id || '') === String(organization.id) ? 'selected' : '' %>><%= organization.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <fieldset class="form-field category-options">
+      <legend>Categories <span>(optional)</span></legend>
+      <% categories.forEach((category) => { %>
+        <label class="checkbox-option"><input type="checkbox" name="category_ids" value="<%= category.id %>" <%= (old.category_ids || []).map(String).includes(String(category.id)) ? 'checked' : '' %>><%= category.name %></label>
+      <% }) %>
+      <% if (!categories.length) { %><p class="field-note">Create a category before assigning one to this project.</p><% } %>
+    </fieldset>
+    <div class="form-actions"><button class="button-link" type="submit">Save project</button><a href="/projects">Cancel</a></div>
+  </form>
+</section>
+<%- include('../w03/partials/footer') %>
