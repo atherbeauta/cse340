@@ -93,6 +93,8 @@ h1 { margin: 0; font-size: clamp(32px, 6vw, 46px); line-height: 1.13; }
 .empty-state { margin: 20px 0 0; padding: 19px 20px; border-left: 3px solid #a8bca9; background: rgba(255, 255, 255, 0.65); color: var(--muted); font-size: 14px; }
 .error-page { padding: 70px 0 100px; }
 .error-page h1 { max-width: 560px; }
+.error-details { max-width: 100%; margin-top: 28px; color: var(--muted); font-size: 13px; }
+.error-details pre { max-width: 100%; overflow: auto; padding: 12px; background: #e9ece7; color: #343a35; white-space: pre-wrap; overflow-wrap: anywhere; }
 .button-link { display: inline-block; margin-top: 25px; padding: 11px 16px; border-radius: 3px; background: var(--green); color: white; font-size: 13px; font-weight: 700; text-decoration: none; }
 .button-link:hover { background: var(--green-dark); color: white; }
 .page-heading > .button-link { margin-top: 19px; }

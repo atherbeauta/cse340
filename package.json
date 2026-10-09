@@ -2,12 +2,13 @@
   "name": "cse340-app",
   "version": "1.0.0",
   "description": "CSE340 assignment app",
-  "main": "src/w03-server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/w03-server.js",
-    "start:w02": "node src/server.js",
-    "start:w03": "node src/w03-server.js",
-    "dev": "nodemon src/w03-server.js"
+    "start": "node src/server.js",
+    "start:w02": "node src/w02-server.js",
+    "start:w03": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test:w03": "node --test src/tests/w03.test.js"
   },
   "dependencies": {
     "connect-flash": "^0.1.1",

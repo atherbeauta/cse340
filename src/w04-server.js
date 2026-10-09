@@ -9,9 +9,14 @@ const w03Routes = require('./routes/w03');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
@@ -22,8 +27,8 @@ app.use(session({
 }));
 app.use(flash());
 app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
+  res.locals.flashSuccess = req.flash('success');
+  res.locals.flashError = req.flash('error');
   next();
 });
 app.use(w04Routes);
@@ -36,7 +41,11 @@ app.use((req, res) => {
 app.use((error, req, res, next) => {
   console.error(error);
   if (res.headersSent) return next(error);
-  res.status(500).render('w03/500', { title: 'Server Error' });
+  res.status(500).render('w03/500', {
+    title: 'Server Error',
+    error: error.message,
+    stack: error.stack
+  });
 });
 
 async function startServer() {

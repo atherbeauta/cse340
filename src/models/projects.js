@@ -16,6 +16,20 @@ async function getAllProjects() {
   }
 }
 
+async function getUpcomingProjects(numberOfProjects) {
+  const result = await db.query(
+    `SELECT project.id, project.name, project.description, project.date,
+            project.organization_id, organization.name AS organization_name
+     FROM projects AS project
+     LEFT JOIN organizations AS organization ON project.organization_id = organization.id
+     WHERE project.date >= CURRENT_DATE
+     ORDER BY project.date ASC, project.name
+     LIMIT $1`,
+    [numberOfProjects]
+  );
+  return result.rows;
+}
+
 async function getProjectById(id) {
   const result = await db.query(
     `SELECT project.id, project.name, project.description, project.date,
@@ -51,4 +65,10 @@ async function getProjectsByOrganization(organizationId) {
   return result.rows;
 }
 
-module.exports = { getAllProjects, getProjectById, getCategoriesByProject, getProjectsByOrganization };
+module.exports = {
+  getAllProjects,
+  getUpcomingProjects,
+  getProjectById,
+  getCategoriesByProject,
+  getProjectsByOrganization
+};

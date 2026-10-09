@@ -1,7 +1,7 @@
     </main>
     <footer class="site-footer">
       <span>Community Projects Directory</span>
-      <span>CSE340 · <%= new Date().getFullYear() %></span>
+      <span>CSE340 · <%= new Date().getFullYear() %><% if (NODE_ENV === 'development') { %> · Development mode<% } %></span>
     </footer>
   </body>
 </html>

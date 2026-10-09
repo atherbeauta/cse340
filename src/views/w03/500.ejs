@@ -4,5 +4,12 @@
   <h1>Something went wrong.</h1>
   <p class="intro">The request couldn't be completed. Please try again in a moment.</p>
   <a class="button-link" href="/">Return home</a>
+  <% if (NODE_ENV === 'development') { %>
+    <details class="error-details">
+      <summary>Error details (development only)</summary>
+      <pre><%= error %></pre>
+      <pre><%= stack %></pre>
+    </details>
+  <% } %>
 </section>
 <%- include('partials/footer') %>
